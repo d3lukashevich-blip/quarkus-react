@@ -36,7 +36,7 @@ public class ProjectService {
                         }));
     }
 
-    public Uni<List<User>> listForUser() {
+    public Uni<List<Project>> listForUser() {
         return userService.getCurrentUser()
                 .chain(user -> Project.find("user", user).list());
     }
