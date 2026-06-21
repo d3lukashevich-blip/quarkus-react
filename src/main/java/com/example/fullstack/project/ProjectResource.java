@@ -10,6 +10,7 @@ import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.core.MediaType;
+import org.jboss.resteasy.reactive.ResponseStatus;
 
 import java.util.List;
 
@@ -36,6 +37,7 @@ public class ProjectResource {
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
+    @ResponseStatus(201)
     public Uni<Project> create(Project project) {
         return projectService.create(project);
     }
