@@ -3,8 +3,8 @@ package com.example.fullstack.user;
 import com.example.fullstack.project.Project;
 import com.example.fullstack.task.Task;
 import io.quarkus.elytron.security.common.BcryptUtil;
+import io.quarkus.hibernate.reactive.panache.common.WithSession;
 import io.quarkus.hibernate.reactive.panache.common.WithTransaction;
-import io.quarkus.hibernate.reactive.panache.common.runtime.ReactiveTransactional;
 import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.ApplicationScoped;
 import org.hibernate.ObjectNotFoundException;
@@ -21,6 +21,7 @@ public class UserService {
                 .failWith(() -> new ObjectNotFoundException(id, "User"));
     }
 
+    @WithSession
     public Uni<User> findByName(String name) {
         return User.find("name", name).firstResult();
     }
@@ -54,5 +55,9 @@ public class UserService {
 
     public Uni<User> getCurrentUser() {
         return User.find("order by ID").firstResult();
+    }
+
+    public static boolean matches(User user, String password) {
+        return BcryptUtil.matches(password, user.password);
     }
 }
